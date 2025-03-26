@@ -1,5 +1,6 @@
 from django.db import models
 from polymorphic.models import PolymorphicModel
+from evaluation.models import Evaluation
 
 # Create your models here.
 class UserAnswer(PolymorphicModel):
@@ -9,8 +10,7 @@ class UserAnswer(PolymorphicModel):
     SET_NULL should be used as the on_delete behaviour for foreignkeys pointing to the
     exercises. The answers will then be kept even when the exercise is deleted.
     """
-
-    #html_extra_class = ""
+    
     exercise = models.CharField(max_length=255)
     instance = models.CharField(max_length=255) # CourseInstance reference
     user = models.CharField(max_length=255) # User reference
@@ -55,3 +55,35 @@ class UserAnswer(PolymorphicModel):
             answers = answers.filter(revision=revision)
 
         return answers.order_by("answer_date")
+    
+
+class UserTextfieldExerciseAnswer(UserAnswer):
+    
+    given_answer = models.TextField()
+
+
+    def __str__(self):
+        return self.given_answer
+
+    def get_html_repr(self, context):
+        return self.given_answer
+    
+
+    def __str__(self):
+        if len(self.answer) > 76:
+            return self.answer[0:76] + " ..."
+        return self.answer
+
+
+class UserMultipleChoiceExerciseAnswer(UserAnswer):
+
+    chosen_answer = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.chosen_answer)
+
+    def is_correct(self):
+        return self.chosen_answer.correct
+
+    def get_html_repr(self, context):
+        return self.chosen_answer
