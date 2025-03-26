@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "user_task_completion",
     "evaluation",
     "rest_framework",
+    "api_keys",
     "polymorphic"
 ]
 

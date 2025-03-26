@@ -3,21 +3,25 @@ from rest_framework.response import Response
 from .models import UserAnswer, UserTextfieldExerciseAnswer
 from .serializers import DynamicUserAnswerSerializer, UserTextfieldExerciseAnswerSerializer
 from rest_framework.views import APIView
+from api_keys.permissions import HasAPIKeyPermission
 
 
 
 class AnswerList(generics.ListAPIView):
   queryset = UserAnswer.objects.all()
   serializer_class = DynamicUserAnswerSerializer
+  permission_classes = [HasAPIKeyPermission]
 
 class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
-    queryset = UserTextfieldExerciseAnswer.objects.all()
-    serializer_class = UserTextfieldExerciseAnswerSerializer
+  queryset = UserTextfieldExerciseAnswer.objects.all()
+  serializer_class = UserTextfieldExerciseAnswerSerializer
+  permission_classes = [HasAPIKeyPermission]
 
   
 
 class AnswerListByUser(generics.ListAPIView):
   serializer_class = DynamicUserAnswerSerializer
+  permission_classes = [HasAPIKeyPermission]
 
   def get_queryset(self):
       user = self.kwargs["user"]
@@ -26,6 +30,7 @@ class AnswerListByUser(generics.ListAPIView):
 
 class AnswerListByExercise(generics.ListAPIView):
   serializer_class = DynamicUserAnswerSerializer
+  permission_classes = [HasAPIKeyPermission]
 
   def get_queryset(self):
       exercise = self.kwargs["exercise"]
@@ -33,6 +38,7 @@ class AnswerListByExercise(generics.ListAPIView):
   
 class AnswerListByCourse(generics.ListAPIView):
   serializer_class = DynamicUserAnswerSerializer
+  permission_classes = [HasAPIKeyPermission]
 
   def get_queryset(self):
       course = self.kwargs["course"]
@@ -40,6 +46,7 @@ class AnswerListByCourse(generics.ListAPIView):
   
 class AnswerListByUserAndExercise(generics.ListAPIView):
    serializer_class = DynamicUserAnswerSerializer
+   permission_classes = [HasAPIKeyPermission]
 
    def get_queryset(self):
       user = self.kwargs["user"]
@@ -48,15 +55,17 @@ class AnswerListByUserAndExercise(generics.ListAPIView):
    
 class AnswerListByUserAndCourse(generics.ListAPIView):
    serializer_class = DynamicUserAnswerSerializer
+   permission_classes = [HasAPIKeyPermission]
 
    def get_queryset(self):
       user = self.kwargs["user"]
       course = self.kwargs["course"]
       return UserAnswer.objects.filter(user=user, instance=course)
    
-class SpecificAnswer(generics.RetrieveAPIView):
+class SpecificAnswer(generics.RetrieveDestroyAPIView):
    queryset = UserAnswer.objects.all()
    serializer_class = DynamicUserAnswerSerializer
+   permission_classes = [HasAPIKeyPermission]
    lookup_field = 'id'
 
   
