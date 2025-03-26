@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import generics, status
+from rest_framework.response import Response
+from .models import UserAnswer
+from .serializers import DynamicUserAnswerSerializer
+from rest_framework.views import APIView
 
-# Create your views here.
+
+
+class UserAnswerList(generics.ListAPIView):
+  queryset = UserAnswer.objects.all()
+  serializer_class = DynamicUserAnswerSerializer

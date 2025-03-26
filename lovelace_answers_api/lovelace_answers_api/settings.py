@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "user_answer",
-    "rest_framework"
+    "user_task_completion",
+    "evaluation",
+    "rest_framework",
+    "polymorphic"
 ]
 
 MIDDLEWARE = [
