@@ -29,7 +29,7 @@ urlpatterns = [
         name="completions-by-user-course",
     ),
     path(
-        "users/<str:user>/exercises/<str:exercise>/courses/<str:course>/completions/",
+        "users/<str:user>/exercises/<str:exercise>/courses/<str:instance>/completions/",
         views.UserTaskCompletionRetrieveUpdateDestroy.as_view(),
         name="completions-by-user-exercise-course",
     ),

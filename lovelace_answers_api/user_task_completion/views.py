@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
 from .models import UserTaskCompletion
 from .serializers import UserTaskCompletionSerializer
@@ -44,9 +44,26 @@ class UserTaskCompletionListByUserCourse(generics.ListAPIView):
         user = self.kwargs['user']
         course = self.kwargs['course']
         return UserTaskCompletion.objects.filter(user=user, instance=course)
+    
+class MultipleFieldLookupMixin:
+    """
+    FROM: https://www.django-rest-framework.org/api-guide/generic-views/#creating-custom-mixins
 
-class UserTaskCompletionRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = UserTaskCompletionSerializer
-
+    Apply this mixin to any view or viewset to get multiple field filtering
+    based on a `lookup_fields` attribute, instead of the default single field filtering.
+    """
     def get_object(self):
-        return super().get_object()
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs.get(field): # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+class UserTaskCompletionRetrieveUpdateDestroy(MultipleFieldLookupMixin, generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserTaskCompletion.objects.all()
+    serializer_class = UserTaskCompletionSerializer
+    lookup_fields = ['user', 'exercise', 'instance']
