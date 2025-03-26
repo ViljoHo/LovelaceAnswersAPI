@@ -5,23 +5,22 @@ from .models import UserAnswer, UserTextfieldExerciseAnswer, UserMultipleChoiceE
 class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
   class Meta:
     model = UserTextfieldExerciseAnswer
-    fields = '__all__'
+    exclude = ['polymorphic_ctype']
 
 
 class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
     class Meta:
       model = UserMultipleChoiceExerciseAnswer
-      fields = '__all__'
+      exclude = ['polymorphic_ctype']
 
 
 class BaseUserAnswerSerializer(serializers.ModelSerializer):
-    """Perusserialisoija kaikille muille UserAnswer-tyypeille"""
+    
     class Meta:
         model = UserAnswer
-        fields = '__all__'
+        exclude = ['polymorphic_ctype']
 
 class DynamicUserAnswerSerializer(serializers.Serializer):
-    """Dynaaminen serialisoija, joka valitsee oikean serialisoijan"""
 
     def to_representation(self, instance):
         if isinstance(instance, UserTextfieldExerciseAnswer):
