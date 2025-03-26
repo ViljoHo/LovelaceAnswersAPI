@@ -21,14 +21,14 @@ class EvaluationCreate(generics.CreateAPIView):
     serializer_class = EvaluationSerializer
 
     def create(self, request):
-        answer_id = self.kwargs['answerID']
+        answer_id = self.kwargs['answer']
         user_answer = get_object_or_404(UserAnswer, pk=answer_id)
 
         if user_answer.evaluation:
             return Response({"error": "Evaluation already exists for this answer."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
-        
+
         if serializer.is_valid():
             evaluation = serializer.save()
             user_answer.evaluation = evaluation
