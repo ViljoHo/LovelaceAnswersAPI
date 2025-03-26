@@ -5,7 +5,6 @@ from django.db import models
 class Evaluation(models.Model):
     """Evaluation of a student's answer to an exercise."""
 
-    userStaff = models.CharField(max_length=255)
     correct = models.BooleanField(default=False)
     suspect = models.BooleanField(default=False)
     points = models.DecimalField(default=0, max_digits=5, decimal_places=2)
