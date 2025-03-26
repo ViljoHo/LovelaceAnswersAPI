@@ -30,14 +30,6 @@ class UserTaskCompletionListByCourse(generics.ListAPIView):
         course = self.kwargs['course']
         return UserTaskCompletion.objects.filter(instance=course)
 
-# class UserTaskCompletionListByUserExercise(generics.ListAPIView):
-#     serializer_class = UserTaskCompletionSerializer
-
-#     def get_queryset(self):
-#         user = self.kwargs['user']
-#         exercise = self.kwargs['exercise']
-#         return UserTaskCompletion.objects.filter(user=user, exercise=exercise)
-
 class UserTaskCompletionListByUserCourse(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
 
