@@ -20,7 +20,7 @@ class EvaluationListByStaff(generics.ListAPIView):
 class EvaluationCreate(generics.CreateAPIView):
     serializer_class = EvaluationSerializer
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         answer_id = self.kwargs['answer']
         user_answer = get_object_or_404(UserAnswer, pk=answer_id)
 
