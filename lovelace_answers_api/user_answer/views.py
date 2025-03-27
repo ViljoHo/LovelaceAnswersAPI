@@ -1,4 +1,7 @@
 from rest_framework import generics
+from django.urls import reverse
+from rest_framework.response import Response
+from rest_framework import status
 from .serializers import (
     DynamicUserAnswerSerializer,
     UserTextfieldExerciseAnswerSerializer,
@@ -17,6 +20,22 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
     queryset = UserTextfieldExerciseAnswer.objects.all()
     serializer_class = UserTextfieldExerciseAnswerSerializer
     permission_classes = [HasAPIKeyPermission]
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+
+        instance = serializer.save()
+
+        location_url = reverse('get-specific-answer', kwargs={'id': instance.id})
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers={"Location": location_url}
+        )
 
 
 class AnswerListByUser(generics.ListAPIView):
