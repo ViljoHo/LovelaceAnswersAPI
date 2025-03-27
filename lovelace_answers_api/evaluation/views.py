@@ -18,7 +18,7 @@ class EvaluationListByStaff(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.kwargs['user']
-        return Evaluation.objects.filter(user=user)
+        return Evaluation.objects.filter(evaluator=user)
 
 class EvaluationCreate(generics.CreateAPIView):
     serializer_class = EvaluationSerializer
