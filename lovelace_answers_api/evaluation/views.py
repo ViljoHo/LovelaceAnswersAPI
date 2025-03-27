@@ -3,15 +3,18 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 
 from .models import Evaluation
+from api_keys.permissions import HasAPIKeyPermission
 from user_answer.models import UserAnswer
 from .serializers import EvaluationSerializer
 
 class EvaluationList(generics.ListAPIView):
     queryset = Evaluation.objects.all()
     serializer_class = EvaluationSerializer
+    permission_classes = [HasAPIKeyPermission]
 
 class EvaluationListByStaff(generics.ListAPIView):
     serializer_class = EvaluationSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
         user = self.kwargs['user']
@@ -19,6 +22,7 @@ class EvaluationListByStaff(generics.ListAPIView):
 
 class EvaluationCreate(generics.CreateAPIView):
     serializer_class = EvaluationSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def create(self, request, *args, **kwargs):
         answer_id = self.kwargs['answer']
@@ -41,3 +45,4 @@ class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Evaluation.objects.all()
     serializer_class = EvaluationSerializer
     lookup_field = 'id'
+    permission_classes = [HasAPIKeyPermission]

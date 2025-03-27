@@ -2,16 +2,19 @@ from rest_framework import generics
 from .models import UserTaskCompletion
 from .serializers import UserTaskCompletionSerializer
 
+from api_keys.permissions import HasAPIKeyPermission
 from .utils import MultipleFieldLookupMixin
 
 
 class UserTaskCompletionListCreate(generics.ListCreateAPIView):
     queryset = UserTaskCompletion.objects.all()
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
 
 class UserTaskCompletionListByUser(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
         user = self.kwargs["user"]
@@ -20,6 +23,7 @@ class UserTaskCompletionListByUser(generics.ListAPIView):
 
 class UserTaskCompletionListByExercise(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
         exercise = self.kwargs["exercise"]
@@ -28,6 +32,7 @@ class UserTaskCompletionListByExercise(generics.ListAPIView):
 
 class UserTaskCompletionListByCourse(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
         course = self.kwargs["course"]
@@ -36,6 +41,7 @@ class UserTaskCompletionListByCourse(generics.ListAPIView):
 
 class UserTaskCompletionListByUserCourse(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
         user = self.kwargs["user"]
@@ -48,6 +54,7 @@ class UserTaskCompletionRetrieveUpdateDestroy(
 ):
     queryset = UserTaskCompletion.objects.all()
     serializer_class = UserTaskCompletionSerializer
+    permission_classes = [HasAPIKeyPermission]
 
     # 'instance' used instead of 'course' because it is the field
     # name in the model

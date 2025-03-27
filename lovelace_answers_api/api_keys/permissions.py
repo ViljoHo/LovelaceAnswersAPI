@@ -23,9 +23,9 @@ class HasAPIKeyPermission(BasePermission):
     
         if request.method == "GET" and api_key_obj.level in ["read", "write", "admin"]:
             return True
-        elif request.method == "POST" and api_key_obj.level in ["write", "admin"]:
+        elif request.method in ["POST", "PUT", "PATCH"] and api_key_obj.level in ["write", "admin"]:
             return True
-        elif request.method in ["PUT", "DELETE"] and api_key_obj.level == "admin":
+        elif request.method in ["DELETE"] and api_key_obj.level == "admin":
             return True
     
         return False
