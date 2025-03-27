@@ -14,7 +14,6 @@ class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     level = kwargs['level']
 
-
     raw_key = uuid.uuid4().hex
 
     hashed_key = hashlib.sha256(raw_key.encode('utf-8')).hexdigest()
