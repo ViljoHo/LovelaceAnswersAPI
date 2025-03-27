@@ -17,7 +17,7 @@ class UserTaskCompletionListByUser(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        user = self.kwargs["user"]
+        user = self.kwargs['user']
         return UserTaskCompletion.objects.filter(user=user)
 
 
@@ -26,7 +26,7 @@ class UserTaskCompletionListByExercise(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        exercise = self.kwargs["exercise"]
+        exercise = self.kwargs['exercise']
         return UserTaskCompletion.objects.filter(exercise=exercise)
 
 
@@ -35,7 +35,7 @@ class UserTaskCompletionListByCourse(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        course = self.kwargs["course"]
+        course = self.kwargs['course']
         return UserTaskCompletion.objects.filter(instance=course)
 
 
@@ -44,8 +44,8 @@ class UserTaskCompletionListByUserCourse(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        user = self.kwargs["user"]
-        course = self.kwargs["course"]
+        user = self.kwargs['user']
+        course = self.kwargs['course']
         return UserTaskCompletion.objects.filter(user=user, instance=course)
 
 
@@ -58,4 +58,4 @@ class UserTaskCompletionRetrieveUpdateDestroy(
 
     # 'instance' used instead of 'course' because it is the field
     # name in the model
-    lookup_fields = ["user", "exercise", "instance"]
+    lookup_fields = ['user', 'exercise', 'instance']

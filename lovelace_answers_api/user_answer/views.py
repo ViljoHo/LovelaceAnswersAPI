@@ -10,6 +10,7 @@ from api_keys.permissions import HasAPIKeyPermission
 
 from .models import UserAnswer, UserTextfieldExerciseAnswer
 
+
 class AnswerList(generics.ListAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = DynamicUserAnswerSerializer
@@ -21,7 +22,6 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
     serializer_class = UserTextfieldExerciseAnswerSerializer
     permission_classes = [HasAPIKeyPermission]
 
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
@@ -29,12 +29,12 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
 
         instance = serializer.save()
 
-        location_url = reverse('get-specific-answer', kwargs={'id': instance.id})
+        location_url = reverse("get-specific-answer", kwargs={"id": instance.id})
 
         return Response(
             serializer.data,
             status=status.HTTP_201_CREATED,
-            headers={"Location": location_url}
+            headers={"Location": location_url},
         )
 
 
@@ -85,7 +85,7 @@ class AnswerListByUserAndCourse(generics.ListAPIView):
         return UserAnswer.objects.filter(user=user, instance=course)
 
 
-class SpecificAnswer(generics.RetrieveDestroyAPIView):
+class AnswerRetrieveDestroy(generics.RetrieveDestroyAPIView):
     queryset = UserAnswer.objects.all()
     serializer_class = DynamicUserAnswerSerializer
     permission_classes = [HasAPIKeyPermission]
