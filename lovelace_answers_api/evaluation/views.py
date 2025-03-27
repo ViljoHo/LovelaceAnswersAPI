@@ -36,3 +36,8 @@ class EvaluationCreate(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
+class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Evaluation.objects.all()
+    serializer_class = EvaluationSerializer
+    lookup_field = 'id'
