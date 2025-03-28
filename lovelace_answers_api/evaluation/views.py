@@ -40,23 +40,22 @@ class EvaluationCreate(generics.CreateAPIView):
 
         serializer = self.get_serializer(data=request.data)
 
-        if serializer.is_valid():
-            evaluation = serializer.save()
-            user_answer.evaluation = evaluation
-            user_answer.save()
+        serializer.is_valid(raise_exception=True)
 
-            location_url = reverse(
-                "get-put-patch-delete-evaluation",
-                kwargs={"id": evaluation.id},
-            )
+        evaluation = serializer.save()
+        user_answer.evaluation = evaluation
+        user_answer.save()
 
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED,
-                headers={"Location": location_url},
-            )
+        location_url = reverse(
+            "get-put-patch-delete-evaluation",
+            kwargs={"id": evaluation.id},
+        )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers={"Location": location_url},
+        )
 
 
 class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
