@@ -1,4 +1,7 @@
+from django.urls import reverse
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
 from .models import UserTaskCompletion
 from .serializers import UserTaskCompletionSerializer
 
@@ -11,13 +14,35 @@ class UserTaskCompletionListCreate(generics.ListCreateAPIView):
     serializer_class = UserTaskCompletionSerializer
     permission_classes = [HasAPIKeyPermission]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+
+        completion = serializer.save()
+
+        location_url = reverse(
+            "get-put-patch-delete-completion",
+            kwargs={
+                "user": completion.user,
+                "exercise": completion.exercise,
+                "instance": completion.instance,
+            },
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers={"Location": location_url},
+        )
+
 
 class UserTaskCompletionListByUser(generics.ListAPIView):
     serializer_class = UserTaskCompletionSerializer
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        user = self.kwargs['user']
+        user = self.kwargs["user"]
         return UserTaskCompletion.objects.filter(user=user)
 
 
@@ -26,7 +51,7 @@ class UserTaskCompletionListByExercise(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        exercise = self.kwargs['exercise']
+        exercise = self.kwargs["exercise"]
         return UserTaskCompletion.objects.filter(exercise=exercise)
 
 
@@ -35,7 +60,7 @@ class UserTaskCompletionListByCourse(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        course = self.kwargs['course']
+        course = self.kwargs["course"]
         return UserTaskCompletion.objects.filter(instance=course)
 
 
@@ -44,8 +69,8 @@ class UserTaskCompletionListByUserCourse(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
     def get_queryset(self):
-        user = self.kwargs['user']
-        course = self.kwargs['course']
+        user = self.kwargs["user"]
+        course = self.kwargs["course"]
         return UserTaskCompletion.objects.filter(user=user, instance=course)
 
 
@@ -58,4 +83,4 @@ class UserTaskCompletionRetrieveUpdateDestroy(
 
     # 'instance' used instead of 'course' because it is the field
     # name in the model
-    lookup_fields = ['user', 'exercise', 'instance']
+    lookup_fields = ["user", "exercise", "instance"]
