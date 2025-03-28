@@ -29,7 +29,7 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
 
         instance = serializer.save()
 
-        location_url = reverse("get-specific-answer", kwargs={"id": instance.id})
+        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
 
         return Response(
             serializer.data,
