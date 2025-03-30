@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "evaluation",
     "rest_framework",
     "api_keys",
-    "polymorphic"
+    "polymorphic",
+    "drf_yasg"
 ]
 
 MIDDLEWARE = [
