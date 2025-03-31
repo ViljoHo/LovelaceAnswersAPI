@@ -24,7 +24,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Lovelace Answers API",
         default_version='v1',
-        description="Postman-yhteensopiva API-dokumentaatio",
+        description="",
     ),
     public=True,
     permission_classes=(AllowAny,),

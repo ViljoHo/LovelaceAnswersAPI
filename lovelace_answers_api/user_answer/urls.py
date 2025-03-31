@@ -38,4 +38,9 @@ urlpatterns = [
         views.UserTextfieldExerciseAnswerCreate.as_view(),
         name="textfieldanswer-view-create",
     ),
+    path(
+        "answers/multiplechoice/",
+        views.UserMultipleChoiceExerciseAnswerCreate.as_view(),
+        name="multiplechoiceanswer-view-create",
+    ),
 ]

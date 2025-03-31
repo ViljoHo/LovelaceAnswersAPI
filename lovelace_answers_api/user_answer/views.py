@@ -5,10 +5,11 @@ from rest_framework import status
 from .serializers import (
     DynamicUserAnswerSerializer,
     UserTextfieldExerciseAnswerSerializer,
+    UserMultipleChoiceExerciseAnswerSerializer
 )
 from api_keys.permissions import HasAPIKeyPermission
 
-from .models import UserAnswer, UserTextfieldExerciseAnswer
+from .models import UserAnswer, UserTextfieldExerciseAnswer, UserMultipleChoiceExerciseAnswer
 
 
 class AnswerList(generics.ListAPIView):
@@ -21,6 +22,27 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
     queryset = UserTextfieldExerciseAnswer.objects.all()
     serializer_class = UserTextfieldExerciseAnswerSerializer
     permission_classes = [HasAPIKeyPermission]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+
+        instance = serializer.save()
+
+        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers={"Location": location_url},
+        )
+    
+
+class UserMultipleChoiceExerciseAnswerCreate(generics.CreateAPIView):
+    queryset = UserMultipleChoiceExerciseAnswer.objects.all()
+    serializer_class = UserMultipleChoiceExerciseAnswerSerializer
+    #permission_classes = [HasAPIKeyPermission]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
