@@ -29,14 +29,13 @@ class UserAnswer(PolymorphicModel):
     checked = models.BooleanField(verbose_name="This answer has been checked", default=False)
     draft = models.BooleanField(verbose_name="This answer is a draft", default=False)
 
-    
-
 class UserTextfieldExerciseAnswer(UserAnswer):
-    
     given_answer = models.TextField()
 
 
-
 class UserMultipleChoiceExerciseAnswer(UserAnswer):
-
     chosen_answer = models.CharField(max_length=255)
+
+class UserMultipleQuestionExamAnswer(UserAnswer):
+    attempt = models.CharField(max_length=255)
+    answers = models.JSONField()

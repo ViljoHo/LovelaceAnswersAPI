@@ -1,24 +1,36 @@
 from rest_framework import serializers
-from .models import UserAnswer, UserTextfieldExerciseAnswer, UserMultipleChoiceExerciseAnswer
+from .models import (
+    UserAnswer,
+    UserTextfieldExerciseAnswer,
+    UserMultipleChoiceExerciseAnswer,
+    UserMultipleQuestionExamAnswer,
+)
 
 
 class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = UserTextfieldExerciseAnswer
-    exclude = ['polymorphic_ctype']
+    class Meta:
+        model = UserTextfieldExerciseAnswer
+        exclude = ["polymorphic_ctype"]
 
 
 class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-      model = UserMultipleChoiceExerciseAnswer
-      exclude = ['polymorphic_ctype']
+        model = UserMultipleChoiceExerciseAnswer
+        exclude = ["polymorphic_ctype"]
+
+
+class UserMultipleQuestionExamAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserMultipleQuestionExamAnswer
+        exclude = ["polymorphic_ctype"]
 
 
 class BaseUserAnswerSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = UserAnswer
-        exclude = ['polymorphic_ctype']
+        exclude = ["polymorphic_ctype"]
+
 
 class DynamicUserAnswerSerializer(serializers.Serializer):
 
@@ -27,4 +39,6 @@ class DynamicUserAnswerSerializer(serializers.Serializer):
             return UserTextfieldExerciseAnswerSerializer(instance).data
         elif isinstance(instance, UserMultipleChoiceExerciseAnswer):
             return UserMultipleChoiceExerciseAnswerSerializer(instance).data
+        elif isinstance(instance, UserMultipleQuestionExamAnswer):
+            return UserMultipleQuestionExamAnswerSerializer(instance).data
         return BaseUserAnswerSerializer(instance).data
