@@ -29,32 +29,6 @@ class UserAnswer(PolymorphicModel):
     checked = models.BooleanField(verbose_name="This answer has been checked", default=False)
     draft = models.BooleanField(verbose_name="This answer is a draft", default=False)
 
-    # NOTE: This should be obsolete and replaced by content page's get_user_answers
-    @staticmethod
-    def get_task_answers(task, instance=None, user=None, revision=None):
-        if task.content_type == "CHECKBOX_EXERCISE":
-            answers = UserAnswer.objects.filter(usercheckboxexerciseanswer__exercise=task)
-        elif task.content_type == "MULTIPLE_CHOICE_EXERCISE":
-            answers = UserAnswer.objects.filter(usermultiplechoiceexerciseanswer__exercise=task)
-        elif task.content_type == "TEXTFIELD_EXERCISE":
-            answers = UserAnswer.objects.filter(usertextfieldexerciseanswer__exercise=task)
-        elif task.content_type == "FILE_UPLOAD_EXERCISE":
-            answers = UserAnswer.objects.filter(userfileuploadexerciseanswer__exercise=task)
-        elif task.content_type == "REPEATED_TEMPLATE_EXERCISE":
-            answers = UserAnswer.objects.filter(userrepeatedtemplateexerciseanswer__exercise=task)
-        else:
-            raise ValueError(f"Task {task} does not have a valid exercise type")
-
-        if instance:
-            answers = answers.filter(instance=instance)
-
-        if user:
-            answers = answers.filter(user=user)
-
-        if revision:
-            answers = answers.filter(revision=revision)
-
-        return answers.order_by("answer_date")
     
 
 class UserTextfieldExerciseAnswer(UserAnswer):
@@ -62,28 +36,7 @@ class UserTextfieldExerciseAnswer(UserAnswer):
     given_answer = models.TextField()
 
 
-    def __str__(self):
-        return self.given_answer
-
-    def get_html_repr(self, context):
-        return self.given_answer
-    
-
-    def __str__(self):
-        if len(self.answer) > 76:
-            return self.answer[0:76] + " ..."
-        return self.answer
-
 
 class UserMultipleChoiceExerciseAnswer(UserAnswer):
 
     chosen_answer = models.CharField(max_length=255)
-
-    def __str__(self):
-        return str(self.chosen_answer)
-
-    def is_correct(self):
-        return self.chosen_answer.correct
-
-    def get_html_repr(self, context):
-        return self.chosen_answer

@@ -42,7 +42,7 @@ class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
 class UserMultipleChoiceExerciseAnswerCreate(generics.CreateAPIView):
     queryset = UserMultipleChoiceExerciseAnswer.objects.all()
     serializer_class = UserMultipleChoiceExerciseAnswerSerializer
-    #permission_classes = [HasAPIKeyPermission]
+    permission_classes = [HasAPIKeyPermission]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
