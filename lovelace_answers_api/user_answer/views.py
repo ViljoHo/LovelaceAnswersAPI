@@ -24,67 +24,36 @@ class AnswerList(generics.ListAPIView):
     permission_classes = [HasAPIKeyPermission]
 
 
-class UserTextfieldExerciseAnswerCreate(generics.CreateAPIView):
+class BaseExerciseAnswerCreateView(generics.CreateAPIView):
+    permission_classes = [HasAPIKeyPermission]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+
+        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers={"Location": location_url},
+        )
+
+
+class UserTextfieldExerciseAnswerCreate(BaseExerciseAnswerCreateView):
     queryset = UserTextfieldExerciseAnswer.objects.all()
     serializer_class = UserTextfieldExerciseAnswerSerializer
-    permission_classes = [HasAPIKeyPermission]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-
-        instance = serializer.save()
-
-        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
-
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED,
-            headers={"Location": location_url},
-        )
 
 
-class UserMultipleChoiceExerciseAnswerCreate(generics.CreateAPIView):
+class UserMultipleChoiceExerciseAnswerCreate(BaseExerciseAnswerCreateView):
     queryset = UserMultipleChoiceExerciseAnswer.objects.all()
     serializer_class = UserMultipleChoiceExerciseAnswerSerializer
-    permission_classes = [HasAPIKeyPermission]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-
-        instance = serializer.save()
-
-        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
-
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED,
-            headers={"Location": location_url},
-        )
 
 
 class UserMultipleQuestionExamAnswerCreate(generics.CreateAPIView):
     queryset = UserMultipleQuestionExamAnswer.objects.all()
     serializer_class = UserMultipleQuestionExamAnswerSerializer
-    # permission_classes = [HasAPIKeyPermission]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-
-        instance = serializer.save()
-
-        location_url = reverse("get-delete-answer", kwargs={"id": instance.id})
-
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED,
-            headers={"Location": location_url},
-        )
 
 
 class AnswerListByUser(generics.ListAPIView):
