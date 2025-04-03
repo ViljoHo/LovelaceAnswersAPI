@@ -89,8 +89,19 @@ DATABASES = {
     'default': {
         'ENGINE': env("DATABASE_ENGINE", default='django.db.backends.sqlite3'),
         'NAME': os.path.join(BASE_DIR, env("DATABASE_NAME", default='db.sqlite3')),
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOST"),
+        'PORT': env("DATABASE_PORT"),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env("DATABASE_ENGINE", default='django.db.backends.sqlite3'),
+#         'NAME': os.path.join(BASE_DIR, env("DATABASE_NAME", default='db.sqlite3')),
+#     }
+# }
 
 
 # Password validation
