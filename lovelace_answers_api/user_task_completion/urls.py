@@ -30,7 +30,7 @@ urlpatterns = [
         name="get-completions-by-user-course",
     ),
     path(
-        "users/<str:user>/exercises/<str:exercise>/courses/<str:instance>/completions/",
+        "users/<str:user>/courses/<str:instance>/exercises/<str:exercise>/completions/",
         views.UserTaskCompletionRetrieveUpdateDestroy.as_view(),
         name="get-put-patch-delete-completion",
     ),
