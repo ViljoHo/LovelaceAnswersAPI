@@ -3,9 +3,9 @@ from django.urls import reverse
 from rest_framework import generics, status
 from rest_framework.response import Response
 
-from .models import Evaluation
 from api_keys.permissions import HasAPIKeyPermission
 from user_answer.models import UserAnswer
+from .models import Evaluation
 from .serializers import EvaluationSerializer
 
 

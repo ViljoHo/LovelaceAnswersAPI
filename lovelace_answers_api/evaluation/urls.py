@@ -9,9 +9,9 @@ urlpatterns = [
         name="get-evaluations-by-staff",
     ),
     path(
-    "answers/<int:answer>/evaluations/",
-    views.EvaluationCreate.as_view(),
-    name="post-evaluation",
+        "answers/<int:answer>/evaluations/",
+        views.EvaluationCreate.as_view(),
+        name="post-evaluation",
     ),
     path(
         "evaluations/<int:id>/",
