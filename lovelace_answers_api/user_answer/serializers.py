@@ -5,27 +5,35 @@ from .models import (
     UserMultipleChoiceExerciseAnswer,
     UserMultipleQuestionExamAnswer,
 )
+from evaluation.serializers import EvaluationSerializer
 
 
 class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
+    #evaluation = EvaluationSerializer(read_only=True)
+
     class Meta:
         model = UserTextfieldExerciseAnswer
         exclude = ["polymorphic_ctype"]
 
 
 class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
+    #evaluation = EvaluationSerializer(read_only=True)
+
     class Meta:
         model = UserMultipleChoiceExerciseAnswer
         exclude = ["polymorphic_ctype"]
 
 
 class UserMultipleQuestionExamAnswerSerializer(serializers.ModelSerializer):
+    #evaluation = EvaluationSerializer(read_only=True)
+
     class Meta:
         model = UserMultipleQuestionExamAnswer
         exclude = ["polymorphic_ctype"]
 
 
 class BaseUserAnswerSerializer(serializers.ModelSerializer):
+    #evaluation = EvaluationSerializer(read_only=True)
 
     class Meta:
         model = UserAnswer
