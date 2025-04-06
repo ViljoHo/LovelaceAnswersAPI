@@ -8,13 +8,19 @@ class HasAPIKeyPermission(BasePermission):
 
     def has_permission(self, request, view):
     
-        auth_header = request.headers.get("Authorization")
-        if not auth_header or not auth_header.startswith("Bearer "):
+        # auth_header = request.headers.get("Authorization")
+        # if not auth_header or not auth_header.startswith("Bearer "):
+        #     return False
+        
+        # raw_key = auth_header.split(" ")[1]
+
+        # hashed_key = hashlib.sha256(raw_key.encode('utf-8')).hexdigest()
+        
+        api_key_header = request.headers.get("X-API-KEY")
+        if not api_key_header:
             return False
     
-        raw_key = auth_header.split(" ")[1]
-
-        hashed_key = hashlib.sha256(raw_key.encode('utf-8')).hexdigest()
+        hashed_key = hashlib.sha256(api_key_header.encode('utf-8')).hexdigest()
 
         try:
             api_key_obj = APIKey.objects.get(key=hashed_key)
