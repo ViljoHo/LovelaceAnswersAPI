@@ -49,8 +49,8 @@ urlpatterns = [
         name="multiple-question-exam-answer-create",
     ),
     path(
-    "answers/checkbox/",
-    views.UserCheckboxExerciseAnswerCreate.as_view(),
-    name="checkbox-answer-create",
+        "answers/checkbox/",
+        views.UserCheckboxExerciseAnswerCreate.as_view(),
+        name="checkbox-answer-create",
     ),
 ]

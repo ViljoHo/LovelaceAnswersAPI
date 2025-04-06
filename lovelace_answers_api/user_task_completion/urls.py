@@ -23,7 +23,6 @@ urlpatterns = [
         views.UserTaskCompletionListByCourse.as_view(),
         name="get-completions-by-course",
     ),
-
     path(
         "users/<str:user>/courses/<str:course>/completions/",
         views.UserTaskCompletionListByUserCourse.as_view(),

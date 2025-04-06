@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Evaluation(models.Model):
     """Evaluation of a student's answer to an exercise."""
 

@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.permissions import AllowAny
@@ -34,6 +35,10 @@ urlpatterns = [
     path('api/', include("user_answer.urls")),
     path('api/', include("evaluation.urls")),
     path('api/', include("user_task_completion.urls")),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path(
+        'swagger/',
+        schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui',
+    ),
     path('swagger.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
 ]

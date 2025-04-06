@@ -26,10 +26,6 @@ class Command(BaseCommand):
         APIKey.objects.create(key=hashed_key, level=level)
 
         self.stdout.write(
-            self.style.SUCCESS(
-                f'A new API-key with level {level} created: {raw_key}'
-            )
+            self.style.SUCCESS(f'A new API-key with level {level} created: {raw_key}')
         )
-        self.stdout.write(
-            "Note: This key is displayed only once. Save it safely!"
-        )
+        self.stdout.write("Note: This key is displayed only once. Save it safely!")
