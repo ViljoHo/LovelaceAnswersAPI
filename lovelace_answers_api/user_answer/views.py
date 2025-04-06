@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (
     DynamicUserAnswerSerializer,
+    UserCheckboxExerciseAnswerSerializer,
     UserTextfieldExerciseAnswerSerializer,
     UserMultipleChoiceExerciseAnswerSerializer,
     UserMultipleQuestionExamAnswerSerializer,
@@ -12,6 +13,7 @@ from api_keys.permissions import HasAPIKeyPermission
 
 from .models import (
     UserAnswer,
+    UserCheckboxExerciseAnswer,
     UserTextfieldExerciseAnswer,
     UserMultipleChoiceExerciseAnswer,
     UserMultipleQuestionExamAnswer,
@@ -51,9 +53,14 @@ class UserMultipleChoiceExerciseAnswerCreate(BaseExerciseAnswerCreateView):
     serializer_class = UserMultipleChoiceExerciseAnswerSerializer
 
 
-class UserMultipleQuestionExamAnswerCreate(generics.CreateAPIView):
+class UserMultipleQuestionExamAnswerCreate(BaseExerciseAnswerCreateView):
     queryset = UserMultipleQuestionExamAnswer.objects.all()
     serializer_class = UserMultipleQuestionExamAnswerSerializer
+
+
+class UserCheckboxExerciseAnswerCreate(BaseExerciseAnswerCreateView):
+    queryset = UserCheckboxExerciseAnswer.objects.all()
+    serializer_class = UserCheckboxExerciseAnswerSerializer
 
 
 class AnswerListByUser(generics.ListAPIView):

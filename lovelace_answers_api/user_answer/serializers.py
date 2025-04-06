@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import (
     UserAnswer,
+    UserCheckboxExerciseAnswer,
     UserTextfieldExerciseAnswer,
     UserMultipleChoiceExerciseAnswer,
     UserMultipleQuestionExamAnswer,
@@ -9,7 +10,7 @@ from evaluation.serializers import EvaluationSerializer
 
 
 class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
-    #evaluation = EvaluationSerializer(read_only=True)
+    # evaluation = EvaluationSerializer(read_only=True)
 
     class Meta:
         model = UserTextfieldExerciseAnswer
@@ -17,7 +18,7 @@ class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
 
 
 class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
-    #evaluation = EvaluationSerializer(read_only=True)
+    # evaluation = EvaluationSerializer(read_only=True)
 
     class Meta:
         model = UserMultipleChoiceExerciseAnswer
@@ -25,15 +26,23 @@ class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
 
 
 class UserMultipleQuestionExamAnswerSerializer(serializers.ModelSerializer):
-    #evaluation = EvaluationSerializer(read_only=True)
+    # evaluation = EvaluationSerializer(read_only=True)
 
     class Meta:
         model = UserMultipleQuestionExamAnswer
         exclude = ["polymorphic_ctype"]
 
 
+class UserCheckboxExerciseAnswerSerializer(serializers.ModelSerializer):
+    # evaluation = EvaluationSerializer(read_only=True)
+
+    class Meta:
+        model = UserCheckboxExerciseAnswer
+        exclude = ["polymorphic_ctype"]
+
+
 class BaseUserAnswerSerializer(serializers.ModelSerializer):
-    #evaluation = EvaluationSerializer(read_only=True)
+    # evaluation = EvaluationSerializer(read_only=True)
 
     class Meta:
         model = UserAnswer
@@ -49,4 +58,6 @@ class DynamicUserAnswerSerializer(serializers.Serializer):
             return UserMultipleChoiceExerciseAnswerSerializer(instance).data
         elif isinstance(instance, UserMultipleQuestionExamAnswer):
             return UserMultipleQuestionExamAnswerSerializer(instance).data
+        elif isinstance(instance, UserCheckboxExerciseAnswer):
+            return UserCheckboxExerciseAnswerSerializer(instance).data
         return BaseUserAnswerSerializer(instance).data
