@@ -42,5 +42,7 @@ class HasAPIKeyPermission(BasePermission):
             return True
         elif request.method in ["DELETE"] and api_key_obj.level == "admin":
             return True
+        
+        value = 1
 
         return False
