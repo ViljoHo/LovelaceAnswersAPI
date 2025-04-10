@@ -9,41 +9,46 @@ from .models import (
 from evaluation.serializers import EvaluationSerializer
 
 
-class UserTextfieldExerciseAnswerSerializer(serializers.ModelSerializer):
-    # evaluation = EvaluationSerializer(read_only=True)
+class BaseEvaluationControlSerializer(serializers.ModelSerializer):
+    evaluation = serializers.SerializerMethodField()
 
+    def get_evaluation(self, obj):
+        request = self.context.get("request")
+        if (
+            request
+            and request.parser_context
+            and "id" in request.parser_context["kwargs"]
+        ):
+            return EvaluationSerializer(obj.evaluation).data if obj.evaluation else None
+
+        return obj.evaluation.id if obj.evaluation else None
+
+
+class UserTextfieldExerciseAnswerSerializer(BaseEvaluationControlSerializer):
     class Meta:
         model = UserTextfieldExerciseAnswer
         exclude = ["polymorphic_ctype"]
 
 
-class UserMultipleChoiceExerciseAnswerSerializer(serializers.ModelSerializer):
-    # evaluation = EvaluationSerializer(read_only=True)
-
+class UserMultipleChoiceExerciseAnswerSerializer(BaseEvaluationControlSerializer):
     class Meta:
         model = UserMultipleChoiceExerciseAnswer
         exclude = ["polymorphic_ctype"]
 
 
-class UserMultipleQuestionExamAnswerSerializer(serializers.ModelSerializer):
-    # evaluation = EvaluationSerializer(read_only=True)
-
+class UserMultipleQuestionExamAnswerSerializer(BaseEvaluationControlSerializer):
     class Meta:
         model = UserMultipleQuestionExamAnswer
         exclude = ["polymorphic_ctype"]
 
 
-class UserCheckboxExerciseAnswerSerializer(serializers.ModelSerializer):
-    # evaluation = EvaluationSerializer(read_only=True)
-
+class UserCheckboxExerciseAnswerSerializer(BaseEvaluationControlSerializer):
     class Meta:
         model = UserCheckboxExerciseAnswer
         exclude = ["polymorphic_ctype"]
 
 
-class BaseUserAnswerSerializer(serializers.ModelSerializer):
-    # evaluation = EvaluationSerializer(read_only=True)
-
+class BaseUserAnswerSerializer(BaseEvaluationControlSerializer):
     class Meta:
         model = UserAnswer
         exclude = ["polymorphic_ctype"]
@@ -52,12 +57,17 @@ class BaseUserAnswerSerializer(serializers.ModelSerializer):
 class DynamicUserAnswerSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
+        context = self.context
         if isinstance(instance, UserTextfieldExerciseAnswer):
-            return UserTextfieldExerciseAnswerSerializer(instance).data
+            return UserTextfieldExerciseAnswerSerializer(instance, context=context).data
         elif isinstance(instance, UserMultipleChoiceExerciseAnswer):
-            return UserMultipleChoiceExerciseAnswerSerializer(instance).data
+            return UserMultipleChoiceExerciseAnswerSerializer(
+                instance, context=context
+            ).data
         elif isinstance(instance, UserMultipleQuestionExamAnswer):
-            return UserMultipleQuestionExamAnswerSerializer(instance).data
+            return UserMultipleQuestionExamAnswerSerializer(
+                instance, context=context
+            ).data
         elif isinstance(instance, UserCheckboxExerciseAnswer):
-            return UserCheckboxExerciseAnswerSerializer(instance).data
-        return BaseUserAnswerSerializer(instance).data
+            return UserCheckboxExerciseAnswerSerializer(instance, context=context).data
+        return BaseUserAnswerSerializer(instance, context=context).data
