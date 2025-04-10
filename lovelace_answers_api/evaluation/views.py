@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from rest_framework import generics, status
-from rest_framework.response import Response
+from rest_framework import generics
 
 from api_keys.permissions import HasAPIKeyPermission
 from user_answer.models import UserAnswer
@@ -24,42 +23,19 @@ class EvaluationListByStaff(generics.ListAPIView):
         return Evaluation.objects.filter(evaluator=user)
 
 
-class EvaluationCreate(generics.CreateAPIView):
+class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EvaluationSerializer
     permission_classes = [HasAPIKeyPermission]
 
-    def create(self, request, *args, **kwargs):
+    def get_object(self):
         answer_id = self.kwargs["answer"]
         user_answer = get_object_or_404(UserAnswer, pk=answer_id)
 
-        if user_answer.evaluation:
-            return Response(
-                {"error": "Evaluation already exists for this answer."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        if not user_answer.evaluation and self.request.method in ["PUT"]:
+            evaluation = Evaluation.objects.create()
+            user_answer.evaluation = evaluation
+            user_answer.save()
+        else:
+            evaluation = user_answer.evaluation
 
-        serializer = self.get_serializer(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-
-        evaluation = serializer.save()
-        user_answer.evaluation = evaluation
-        user_answer.save()
-
-        location_url = reverse(
-            "get-put-patch-delete-evaluation",
-            kwargs={"id": evaluation.id},
-        )
-
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED,
-            headers={"Location": location_url},
-        )
-
-
-class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Evaluation.objects.all()
-    serializer_class = EvaluationSerializer
-    lookup_field = "id"
-    permission_classes = [HasAPIKeyPermission]
+        return user_answer.evaluation
