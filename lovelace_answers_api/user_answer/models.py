@@ -15,7 +15,7 @@ class UserAnswer(PolymorphicModel):
     exercise = models.CharField(max_length=255)
     instance = models.CharField(max_length=255)  # CourseInstance reference
     user = models.CharField(max_length=255)  # User reference
-    evaluation = models.ForeignKey(
+    evaluation = models.OneToOneField(
         Evaluation, null=True, blank=True, on_delete=models.SET_NULL
     )
     revision = models.PositiveIntegerField()  # The revision info is always required!
