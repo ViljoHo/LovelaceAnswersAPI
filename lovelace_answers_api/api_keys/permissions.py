@@ -7,15 +7,6 @@ from api_keys.models import APIKey
 class HasAPIKeyPermission(BasePermission):
 
     def has_permission(self, request, view):
-
-        # auth_header = request.headers.get("Authorization")
-        # if not auth_header or not auth_header.startswith("Bearer "):
-        #     return False
-
-        # raw_key = auth_header.split(" ")[1]
-
-        # hashed_key = hashlib.sha256(raw_key.encode('utf-8')).hexdigest()
-
         api_key_header = request.headers.get("X-API-KEY")
         if not api_key_header:
             raise PermissionDenied(
@@ -42,7 +33,5 @@ class HasAPIKeyPermission(BasePermission):
             return True
         elif request.method in ["DELETE"] and api_key_obj.level == "admin":
             return True
-
-        value = 1
 
         return False
