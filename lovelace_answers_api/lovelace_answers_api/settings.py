@@ -32,6 +32,9 @@ DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = []
 
+# If DEBUG=False, must define allowed hosts
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 # Application definition
 
@@ -144,3 +147,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
