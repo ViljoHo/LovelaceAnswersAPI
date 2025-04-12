@@ -3,8 +3,9 @@ import uuid
 import hashlib
 from api_keys.models import APIKey
 
-# python manage.py create_api_key read
-
+# How to use:
+# python manage.py create_api_key api-key-level
+# api-key-level = (read, write, admin)
 
 class Command(BaseCommand):
     help = 'Create new API-key with different levels'
