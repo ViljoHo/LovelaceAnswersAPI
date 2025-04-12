@@ -90,8 +90,8 @@ WSGI_APPLICATION = 'lovelace_answers_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env("DATABASE_ENGINE", default='django.db.backends.sqlite3'),
-        'NAME': env("DATABASE_NAME", default='db.sqlite3'),
+        'ENGINE': env("DATABASE_ENGINE"),
+        'NAME': env("DATABASE_NAME"),
         'USER': env("DATABASE_USER"),
         'PASSWORD': env("DATABASE_PASSWORD"),
         'HOST': env("DATABASE_HOST"),
