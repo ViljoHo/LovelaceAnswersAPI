@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
 from rest_framework import generics
+from rest_framework.exceptions import NotFound
 
 from api_keys.permissions import HasAPIKeyPermission
 from user_answer.models import UserAnswer
@@ -31,11 +31,15 @@ class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         answer_id = self.kwargs["answer"]
         user_answer = get_object_or_404(UserAnswer, pk=answer_id)
 
-        if not user_answer.evaluation and self.request.method in ["PUT"]:
-            evaluation = Evaluation.objects.create()
-            user_answer.evaluation = evaluation
-            user_answer.save()
-        else:
-            evaluation = user_answer.evaluation
+        if self.request.method == "PUT":
+            # Create evaluation if it doesn't exist
+            if not user_answer.evaluation:
+                evaluation = Evaluation.objects.create()
+                user_answer.evaluation = evaluation
+                user_answer.save()
+            return user_answer.evaluation
 
+        # GET, DELETE and HEAD
+        if not user_answer.evaluation:
+            raise NotFound("Evaluation not found for this answer.")
         return user_answer.evaluation
