@@ -46,6 +46,19 @@ urlpatterns = [
 
 
 if env.bool("TESTING"):
+    env = Env()
+    env.read_env()
+
+    schema_view = get_schema_view(
+        openapi.Info(
+            title="Lovelace Answers API",
+            default_version='v1',
+            description="",
+        ),
+        public=True,
+        permission_classes=(AllowAny,),
+    )
+
     urlpatterns += [
         path('testing/', include("for_testing.urls")),
         path(
