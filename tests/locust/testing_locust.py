@@ -4,7 +4,7 @@ from environs import Env
 import json
 import requests
 
-from base_users import BaseQuickstartUser
+from base_users import BasePostingUser
 
 env = Env()
 env.read_env()
@@ -59,31 +59,33 @@ def on_test_start(environment, **kwargs):
         clear_database_for_host(host)
 
 
-class QuickstartUser1(BaseQuickstartUser):
+
+
+
+class PostingUser1(BasePostingUser):
     index = 0
     target_ip = TARGET_HOSTS[0]
 
-
-class QuickstartUser2(BaseQuickstartUser):
+class PostingUser2(BasePostingUser):
     index = 1
     target_ip = TARGET_HOSTS[1]
 
-class QuickstartUser3(BaseQuickstartUser):
+class PostingUser3(BasePostingUser):
     index = 2
     target_ip = TARGET_HOSTS[2]
 
-class QuickstartUser4(BaseQuickstartUser):
+class PostingUser4(BasePostingUser):
     index = 3
     target_ip = TARGET_HOSTS[3]
 
-class QuickstartUser5(BaseQuickstartUser):
+class PostingUser5(BasePostingUser):
     index = 4
     target_ip = TARGET_HOSTS[4]
 
-class QuickstartUser6(BaseQuickstartUser):
+class PostingUser6(BasePostingUser):
     index = 5
     target_ip = TARGET_HOSTS[5]
 
-class QuickstartUser7(BaseQuickstartUser):
+class PostingUser7(BasePostingUser):
     index = 6
     target_ip = TARGET_HOSTS[6]

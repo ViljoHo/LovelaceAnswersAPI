@@ -7,12 +7,12 @@ env.read_env()
 
 API_KEY = env("API_KEY_SERVERS_ADMIN")
 
-class BaseQuickstartUser(HttpUser):
+class BasePostingUser(HttpUser):
+    abstract = True
     wait_time = constant(2)
     index = None
     target_ip = None
     
-
     def on_start(self):
         self.headers = {
             'Content-Type': 'application/json',
@@ -20,6 +20,7 @@ class BaseQuickstartUser(HttpUser):
             'X-Target-Host': self.target_ip,
             'X-API-KEY': API_KEY,
         }
+        
         self.payload = json.dumps({
             "exercise": f"EXERCISE_{self.index + 1}",
             "instance": f"COURSE_{self.index + 1}",
@@ -38,7 +39,3 @@ class BaseQuickstartUser(HttpUser):
     @task
     def view_items(self):
         self.client.post("api/answers/textfield/", data=self.payload, headers=self.headers)
-    
-    # @task
-    # def hello_world(self):
-    #     self.client.get("api/answers/", headers=self.headers)
