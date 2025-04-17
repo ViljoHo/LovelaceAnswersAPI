@@ -35,10 +35,5 @@ urlpatterns = [
     path('api/', include("user_answer.urls")),
     path('api/', include("evaluation.urls")),
     path('api/', include("user_task_completion.urls")),
-    path(
-        'swagger/',
-        schema_view.with_ui('swagger', cache_timeout=0),
-        name='schema-swagger-ui',
-    ),
     path('swagger.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
 ]
