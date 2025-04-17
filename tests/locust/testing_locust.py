@@ -4,14 +4,17 @@ from environs import Env
 import json
 import requests
 
+from base_users import BaseQuickstartUser
+
 env = Env()
 env.read_env()
 
-api_key = env("API_KEY_SERVERS_ADMIN")
+API_KEY = env("API_KEY_SERVERS_ADMIN")
 
-target_hosts = ["192.168.1.221"]
-#target_hosts = ["192.168.1.221", "192.168.1.20"]
-
+# TARGET_HOSTS = ["192.168.1.221"]
+# TARGET_HOSTS = ["192.168.1.221", "192.168.1.20",]
+# TARGET_HOSTS = ["192.168.1.221", "192.168.1.20", "192.168.1.69", "192.168.1.225"]
+TARGET_HOSTS = ["192.168.1.221", "192.168.1.20", "192.168.1.69", "192.168.1.225", "192.168.1.62", "192.168.1.137", "192.168.1.30"]
 
 def clear_database_for_host(host_ip):
     """Clears the answer database for a specific host IP."""
@@ -20,7 +23,7 @@ def clear_database_for_host(host_ip):
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-Target-Host': host_ip,
-        'X-API-KEY': api_key,
+        'X-API-KEY': API_KEY,
     }
 
     client = requests.Session()
@@ -52,83 +55,35 @@ def clear_database_for_host(host_ip):
 @events.test_start.add_listener
 def on_test_start(environment, **kwargs):
     print("A new test is starting")
-    for host in target_hosts:
+    for host in TARGET_HOSTS:
         clear_database_for_host(host)
 
 
-class QuickstartUser1(HttpUser):
-    wait_time = constant(2)
-
-    def on_start(self):
-        self.headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Target-Host': target_hosts[0],
-            'X-API-KEY': api_key,
-        }
-
-        self.payload = json.dumps(
-            {
-                "exercise": "EXERCISE_1",
-                "instance": "COURSE_1",
-                "user": "USER_1",
-                "revision": 1,
-                "language_code": "fi-Fi",
-                "answerer_ip": "192.0.2.1",
-                "given_answer": "vastaus",
-                "task_id": "TASK_123",
-                "collaborators": "Aku",
-                "checked": False,
-                "draft": True,
-                "evaluation": None,
-            }
-        )
-
-    @task
-    def hello_world(self):
-        self.client.get("api/answers/", headers=self.headers)
-
-    @task
-    def view_items(self):
-        self.client.post(
-            "api/answers/textfield/", data=self.payload, headers=self.headers
-        )
+class QuickstartUser1(BaseQuickstartUser):
+    index = 0
+    target_ip = TARGET_HOSTS[0]
 
 
-# class QuickstartUser2(HttpUser):
-#     wait_time = constant(2)
+class QuickstartUser2(BaseQuickstartUser):
+    index = 1
+    target_ip = TARGET_HOSTS[1]
 
-#     def on_start(self):
-#         self.headers = {
-#             'Content-Type': 'application/json',
-#             'Accept': 'application/json',
-#             'X-Target-Host': target_hosts[1],
-#             'X-API-KEY': api_key,
-#         }
+class QuickstartUser3(BaseQuickstartUser):
+    index = 2
+    target_ip = TARGET_HOSTS[2]
 
-#         self.payload = json.dumps(
-#             {
-#                 "exercise": "EXERCISE_2",
-#                 "instance": "COURSE_2",
-#                 "user": "USER_2",
-#                 "revision": 1,
-#                 "language_code": "fi-Fi",
-#                 "answerer_ip": "192.0.2.1",
-#                 "given_answer": "vastaus 2",
-#                 "task_id": "TASK_123",
-#                 "collaborators": "Aku 2",
-#                 "checked": False,
-#                 "draft": True,
-#                 "evaluation": None,
-#             }
-#         )
+class QuickstartUser4(BaseQuickstartUser):
+    index = 3
+    target_ip = TARGET_HOSTS[3]
 
-#     @task
-#     def hello_world(self):
-#         self.client.get("api/answers/", headers=self.headers)
+class QuickstartUser5(BaseQuickstartUser):
+    index = 4
+    target_ip = TARGET_HOSTS[4]
 
-#     @task
-#     def view_items(self):
-#         self.client.post(
-#             "api/answers/textfield/", data=self.payload, headers=self.headers
-#         )
+class QuickstartUser6(BaseQuickstartUser):
+    index = 5
+    target_ip = TARGET_HOSTS[5]
+
+class QuickstartUser7(BaseQuickstartUser):
+    index = 6
+    target_ip = TARGET_HOSTS[6]
