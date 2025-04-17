@@ -30,11 +30,11 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG")
 
-# If DEBUG=True, allowed hosts not needed
-# ALLOWED_HOSTS = []
 
-# If DEBUG=False, must define allowed hosts
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "evaluation",
     "rest_framework",
     "api_keys",
+    "for_testing",
     "polymorphic",
     "drf_yasg",
 ]
