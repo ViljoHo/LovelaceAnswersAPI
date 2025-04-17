@@ -11,22 +11,23 @@ env.read_env()
 
 API_KEY = env("API_KEY_SERVERS_ADMIN")
 
-# TARGET_HOSTS = ["192.168.1.221"]
-# TARGET_HOSTS = ["192.168.1.221", "192.168.1.20",]
-# TARGET_HOSTS = ["192.168.1.221", "192.168.1.20", "192.168.1.69", "192.168.1.225"]
+
 TARGET_HOSTS = [
     "192.168.1.221",
-    "192.168.1.20",
-    "192.168.1.69",
-    "192.168.1.225",
-    "192.168.1.62",
-    "192.168.1.137",
-    "192.168.1.30",
+    "192.168.1.35",
+    "192.168.1.242",
+    "192.168.1.123",
+    "192.168.1.135",
+    "192.168.1.226",
+    "192.168.1.103",
 ]
 
 
+
+
+
 def clear_database_for_host(host_ip):
-    """Clears the answer database for a specific host IP."""
+    """Clears the answer database for a specific host IP using the reset endpoint."""
     print(f"--> Clearing database for {host_ip}")
     headers = {
         'Content-Type': 'application/json',
@@ -39,22 +40,11 @@ def clear_database_for_host(host_ip):
     client.headers.update(headers)
 
     try:
-        response = client.get("http://86.50.168.252/api/answers/")
+        response = client.delete("http://86.50.168.252/testing/reset/answers")
         if response.status_code == 200:
-            answers = response.json()
-            for answer in answers:
-                answer_id = answer.get("id")
-                if answer_id:
-                    del_response = client.delete(
-                        f"http://86.50.168.252/api/answers/{answer_id}/"
-                    )
-                    print(
-                        f"Deleted ID {answer_id} from {host_ip}, status: {del_response.status_code}"
-                    )
+            print(f"Successfully reset database for {host_ip}")
         else:
-            print(
-                f"GET /api/answers failed for {host_ip}, status: {response.status_code}"
-            )
+            print(f"Reset failed for {host_ip}, status: {response.status_code}")
     except Exception as e:
         print(f"Error connecting to {host_ip}: {e}")
 
