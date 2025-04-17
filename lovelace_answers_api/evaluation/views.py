@@ -43,3 +43,14 @@ class EvaluationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         if not user_answer.evaluation:
             raise NotFound("Evaluation not found for this answer.")
         return user_answer.evaluation
+
+
+class EvaluationDestroy(generics.DestroyAPIView):
+    """
+    Use to delete Evaluation if connected UserAnswer already deleted
+    """
+
+    queryset = Evaluation.objects.all()
+    serializer_class = EvaluationSerializer
+    permission_classes = [HasAPIKeyPermission]
+    lookup_field = "id"

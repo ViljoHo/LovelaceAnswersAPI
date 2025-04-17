@@ -13,4 +13,9 @@ urlpatterns = [
         views.EvaluationRetrieveUpdateDestroy.as_view(),
         name="get-put-patch-delete-evaluation",
     ),
+    path(
+        "evaluations/<int:id>/",
+        views.EvaluationDestroy.as_view(),
+        name="delete-evaluation",
+    ),
 ]
