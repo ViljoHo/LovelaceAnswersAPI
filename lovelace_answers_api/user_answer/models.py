@@ -27,9 +27,6 @@ class UserAnswer(PolymorphicModel):
     answerer_ip = models.GenericIPAddressField()
     task_id = models.CharField(max_length=36, null=True, blank=True)
 
-    collaborators = models.TextField(
-        verbose_name="Which users was this exercise answered with", blank=True, null=True
-    )
     checked = models.BooleanField(
         verbose_name="This answer has been checked", default=False
     )
