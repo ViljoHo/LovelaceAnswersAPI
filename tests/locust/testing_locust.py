@@ -56,33 +56,40 @@ def on_test_start(environment, **kwargs):
 class PostingUser1(BasePostingUser):
     index = 0
     target_ip = TARGET_HOSTS[0]
+    api_amount = 7
 
 
 class PostingUser2(BasePostingUser):
     index = 1
     target_ip = TARGET_HOSTS[1]
+    api_amount = 7
 
 
 class PostingUser3(BasePostingUser):
     index = 2
     target_ip = TARGET_HOSTS[2]
+    api_amount = 7
 
 
 class PostingUser4(BasePostingUser):
     index = 3
     target_ip = TARGET_HOSTS[3]
+    api_amount = 7
 
 
 class PostingUser5(BasePostingUser):
     index = 4
     target_ip = TARGET_HOSTS[4]
+    api_amount = 7
 
 
 class PostingUser6(BasePostingUser):
     index = 5
     target_ip = TARGET_HOSTS[5]
+    api_amount = 7
 
 
 class PostingUser7(BasePostingUser):
     index = 6
     target_ip = TARGET_HOSTS[6]
+    api_amount = 7

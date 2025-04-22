@@ -90,7 +90,7 @@ def main():
     print(instances)
 
     # Generate users
-    generate_users(200)
+    generate_users(1400)
 
     # Read users
     users = read_users()
