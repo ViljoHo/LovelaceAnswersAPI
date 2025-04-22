@@ -11,7 +11,7 @@ API_KEY = env("API_KEY_SERVERS_ADMIN")
 EXERCISES = generate_data.read_exercises()
 INSTANCES = generate_data.read_instances()
 USERS = generate_data.read_users()
-UPPER_LIMIT = {1: 1400, 4: 350, 7: 200}
+UPPER_LIMIT = {1: 1399, 4: 349, 7: 199}
 
 GIVEN_ANSWERS = ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3", "incorrect answer 4"]
 
