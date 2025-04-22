@@ -23,9 +23,6 @@ TARGET_HOSTS = [
 ]
 
 
-
-
-
 def clear_database_for_host(host_ip):
     """Clears the answer database for a specific host IP using the reset endpoint."""
     print(f"--> Clearing database for {host_ip}")

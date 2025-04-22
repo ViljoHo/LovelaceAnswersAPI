@@ -1,11 +1,16 @@
 from locust import HttpUser, task, between, constant, events
 import json
+import random
 from environs import Env
+import generate_data
 
 env = Env()
 env.read_env()
 
 API_KEY = env("API_KEY_SERVERS_ADMIN")
+EXERCISES = generate_data.read_exercises()
+INSTANCES = generate_data.read_instances()
+USERS = generate_data.read_users()
 
 
 class BasePostingUser(HttpUser):
@@ -22,11 +27,12 @@ class BasePostingUser(HttpUser):
             'X-API-KEY': API_KEY,
         }
 
-        self.payload = json.dumps(
+    def create_payload(self):
+        payload = json.dumps(
             {
-                "exercise": f"EXERCISE_{self.index + 1}",
-                "instance": f"COURSE_{self.index + 1}",
-                "user": f"USER_{self.index + 1}",
+                "exercise": f"{random.choice(EXERCISES)}",
+                "instance": f"{random.choice(INSTANCES)}",
+                "user": f"{random.choice(USERS)}_API_{self.index + 1}",
                 "revision": 1,
                 "language_code": "fi-Fi",
                 "answerer_ip": "192.0.2.1",
@@ -39,8 +45,10 @@ class BasePostingUser(HttpUser):
             }
         )
 
+        return payload
+
     @task
-    def view_items(self):
+    def post_textfield(self):
         self.client.post(
-            "api/answers/textfield/", data=self.payload, headers=self.headers
+            "api/answers/textfield/", data=self.create_payload(), headers=self.headers
         )
