@@ -89,10 +89,10 @@ def main():
     print("Instances:")
     print(instances)
 
-    # Generate instances
+    # Generate users
     generate_users(10)
 
-    # Read instances
+    # Read users
     users = read_users()
     print(f"Generated {len(users)} users.")
     print("Users:")
