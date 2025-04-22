@@ -81,7 +81,7 @@ def main():
     print(exercises)
 
     # Generate instances
-    generate_instances(10)
+    generate_instances(5)
 
     # Read instances
     instances = read_instances()
@@ -90,7 +90,7 @@ def main():
     print(instances)
 
     # Generate users
-    generate_users(10)
+    generate_users(200)
 
     # Read users
     users = read_users()

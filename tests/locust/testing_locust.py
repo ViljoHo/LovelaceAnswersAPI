@@ -14,12 +14,12 @@ API_KEY = env("API_KEY_SERVERS_ADMIN")
 
 TARGET_HOSTS = [
     "192.168.1.221",
-    "192.168.1.35",
-    "192.168.1.242",
-    "192.168.1.123",
-    "192.168.1.135",
-    "192.168.1.226",
-    "192.168.1.103",
+    "192.168.1.240",
+    "192.168.1.173",
+    "192.168.1.203",
+    "192.168.1.71",
+    "192.168.1.121",
+    "192.168.1.179",
 ]
 
 
@@ -37,9 +37,9 @@ def clear_database_for_host(host_ip):
     client.headers.update(headers)
 
     try:
-        response = client.delete("http://86.50.168.252/testing/reset/answers")
-        if response.status_code == 200:
-            print(f"Successfully reset database for {host_ip}")
+        response = client.delete("http://86.50.168.252/testing/reset/answers/")
+        if response.status_code == 204:
+            print(f"Successfully reset database for {host_ip}, status: {response.status_code}")
         else:
             print(f"Reset failed for {host_ip}, status: {response.status_code}")
     except Exception as e:

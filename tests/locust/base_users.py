@@ -11,6 +11,7 @@ API_KEY = env("API_KEY_SERVERS_ADMIN")
 EXERCISES = generate_data.read_exercises()
 INSTANCES = generate_data.read_instances()
 USERS = generate_data.read_users()
+GIVEN_ANSWERS = ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3", "incorrect answer 4"]
 
 
 class BasePostingUser(HttpUser):
@@ -36,9 +37,9 @@ class BasePostingUser(HttpUser):
                 "revision": 1,
                 "language_code": "fi-Fi",
                 "answerer_ip": "192.0.2.1",
-                "given_answer": f"vastaus {self.index + 1}",
+                "given_answer": f"{random.choice(GIVEN_ANSWERS)}",
                 "task_id": "TASK_123",
-                "collaborators": f"Aku {self.index + 1}",
+                "collaborators": f"Collaborator {self.index + 1}",
                 "checked": False,
                 "draft": True,
                 "evaluation": None,
