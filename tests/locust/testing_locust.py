@@ -1,10 +1,8 @@
-import time
-from locust import HttpUser, task, between, constant, events
+from locust import events
 from environs import Env
-import json
 import requests
 
-from base_users import BasePostingUser
+from base_users import BaseTestUser
 
 env = Env()
 env.read_env()
@@ -39,7 +37,9 @@ def clear_database_for_host(host_ip):
     try:
         response = client.delete("http://86.50.168.252/testing/reset/answers/")
         if response.status_code == 204:
-            print(f"Successfully reset database for {host_ip}, status: {response.status_code}")
+            print(
+                f"Successfully reset database for {host_ip}, status: {response.status_code}"
+            )
         else:
             print(f"Reset failed for {host_ip}, status: {response.status_code}")
     except Exception as e:
@@ -53,43 +53,43 @@ def on_test_start(environment, **kwargs):
         clear_database_for_host(host)
 
 
-class PostingUser1(BasePostingUser):
+class TestUser1(BaseTestUser):
     index = 0
     target_ip = TARGET_HOSTS[0]
     api_amount = 7
 
 
-class PostingUser2(BasePostingUser):
+class TestUser2(BaseTestUser):
     index = 1
     target_ip = TARGET_HOSTS[1]
     api_amount = 7
 
 
-class PostingUser3(BasePostingUser):
+class TestUser3(BaseTestUser):
     index = 2
     target_ip = TARGET_HOSTS[2]
     api_amount = 7
 
 
-class PostingUser4(BasePostingUser):
+class TestUser4(BaseTestUser):
     index = 3
     target_ip = TARGET_HOSTS[3]
     api_amount = 7
 
 
-class PostingUser5(BasePostingUser):
+class TestUser5(BaseTestUser):
     index = 4
     target_ip = TARGET_HOSTS[4]
     api_amount = 7
 
 
-class PostingUser6(BasePostingUser):
+class TestUser6(BaseTestUser):
     index = 5
     target_ip = TARGET_HOSTS[5]
     api_amount = 7
 
 
-class PostingUser7(BasePostingUser):
+class TestUser7(BaseTestUser):
     index = 6
     target_ip = TARGET_HOSTS[6]
     api_amount = 7

@@ -13,7 +13,13 @@ INSTANCES = generate_data.read_instances()
 USERS = generate_data.read_users()
 UPPER_LIMIT = {1: 1399, 4: 349, 7: 199}
 
-GIVEN_ANSWERS = ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3", "incorrect answer 4"]
+GIVEN_ANSWERS = [
+    "correct answer",
+    "incorrect answer 1",
+    "incorrect answer 2",
+    "incorrect answer 3",
+    "incorrect answer 4",
+]
 
 
 class BaseUser(HttpUser):
@@ -32,10 +38,10 @@ class BaseUser(HttpUser):
         }
 
 
-class BasePostingUser(BaseUser):
+class BaseTestUser(BaseUser):
     abstract = True
-   
-    def create_payload(self):
+
+    def create_textfield_payload(self):
         payload = json.dumps(
             {
                 "exercise": f"{random.choice(EXERCISES)}",
@@ -54,29 +60,72 @@ class BasePostingUser(BaseUser):
 
         return payload
 
+    def create_multiplechoice_payload(self):
+        payload = json.dumps(
+            {
+                "exercise": f"{random.choice(EXERCISES)}",
+                "instance": f"{random.choice(INSTANCES)}",
+                "user": f"{USERS[random.randint(0, UPPER_LIMIT.get(self.api_amount))]}_API_{self.index + 1}",
+                "revision": 1,
+                "language_code": "fi-Fi",
+                "answerer_ip": "192.0.2.1",
+                "chosen_answer": f"Chosen_answer_{random.randint(1, 10)}",
+                "task_id": "TASK_123",
+                "checked": False,
+                "draft": True,
+                "evaluation": None,
+            }
+        )
+
+        return payload
+
+    def create_evaluation_payload(self):
+        payload = json.dumps(
+            {
+                "evaluator": f"Evaluator_{random.randint(1, 20)}",
+                "correct": True,
+                "suspect": False,
+                "points": 2,
+                "max_points": 5,
+                "feedback": "good",
+                "comment": "Well done!",
+            }
+        )
+
+        return payload
+
     @task
     def post_textfield(self):
         self.client.post(
-            "api/answers/textfield/", data=self.create_payload(), headers=self.headers
+            "api/answers/textfield/",
+            data=self.create_textfield_payload(),
+            headers=self.headers,
         )
 
     @task
     def get_by_user(self):
         self.client.get(
-            f"api/users/{USERS[random.randint(0, UPPER_LIMIT.get(self.api_amount))]}_API_{self.index + 1}/answers/", headers=self.headers
-        )
-
-class BaseGettingUser(BaseUser):
-    abstract = True
-
-    @task
-    def get_by_user(self):
-        self.client.get(
-            f"api/users/{random.choice(USERS)}_API_{self.index + 1}/answers/", headers=self.headers
+            f"api/users/{USERS[random.randint(0, UPPER_LIMIT.get(self.api_amount))]}_API_{self.index + 1}/answers/",
+            headers=self.headers,
         )
 
     @task
-    def get_by_user_(self):
-        self.client.get(
-            f"api/exercises/{random.choice(EXERCISES)}/answers/", headers=self.headers
+    def post_get_delete_evaluation(self):
+        response = self.client.post(
+            "api/answers/multiplechoice/",
+            data=self.create_multiplechoice_payload(),
+            headers=self.headers,
         )
+        location = response.headers.get('Location').lstrip("/")
+        if not location:
+            return
+
+        self.client.put(
+            f"{location}evaluation/",
+            data=self.create_evaluation_payload(),
+            headers=self.headers,
+        )
+
+        self.client.get(f"{location}evaluation/", headers=self.headers)
+
+        self.client.delete(f"{location}evaluation/", headers=self.headers)
