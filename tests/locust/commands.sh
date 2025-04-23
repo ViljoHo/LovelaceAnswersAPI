@@ -1,3 +1,7 @@
+locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api1\api1 --csv-full-history
+locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api4\api4 --csv-full-history
+locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api7\api7 --csv-full-history
+
 locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s
 locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api1\jotain
 
