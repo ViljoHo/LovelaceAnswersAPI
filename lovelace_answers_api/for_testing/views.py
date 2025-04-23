@@ -2,7 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from user_answer.models import UserAnswer
+from user_answer.models import (
+    UserAnswer,
+    UserCheckboxExerciseAnswer,
+    UserMultipleChoiceExerciseAnswer,
+    UserMultipleQuestionExamAnswer,
+    UserTextfieldExerciseAnswer,
+)
 from evaluation.models import Evaluation
 from user_task_completion.models import UserTaskCompletion
 from api_keys.permissions import HasAPIKeyPermission
@@ -13,12 +19,17 @@ class ResetUserAnswersView(APIView):
 
     def delete(self, request, format=None):
 
+        UserTextfieldExerciseAnswer.objects.all().delete()
+        UserCheckboxExerciseAnswer.objects.all().delete()
+        UserMultipleChoiceExerciseAnswer.objects.all().delete()
+        UserMultipleQuestionExamAnswer.objects.all().delete()
         UserAnswer.objects.all().delete()
 
         return Response(
             {"message": "All UserAnswers deleted."}, status=status.HTTP_204_NO_CONTENT
         )
-    
+
+
 class ResetEvaluationsView(APIView):
     permission_classes = [HasAPIKeyPermission]
 
@@ -29,7 +40,8 @@ class ResetEvaluationsView(APIView):
         return Response(
             {"message": "All Evaluations deleted."}, status=status.HTTP_204_NO_CONTENT
         )
-    
+
+
 class ResetUserTaskCompletionsView(APIView):
     permission_classes = [HasAPIKeyPermission]
 
@@ -38,5 +50,6 @@ class ResetUserTaskCompletionsView(APIView):
         UserTaskCompletion.objects.all().delete()
 
         return Response(
-            {"message": "All UserTaskCompletions deleted."}, status=status.HTTP_204_NO_CONTENT
+            {"message": "All UserTaskCompletions deleted."},
+            status=status.HTTP_204_NO_CONTENT,
         )
