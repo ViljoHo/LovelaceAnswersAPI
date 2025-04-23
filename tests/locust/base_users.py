@@ -107,6 +107,7 @@ class BaseTestUser(BaseUser):
         self.client.get(
             f"api/users/{USERS[random.randint(0, UPPER_LIMIT.get(self.api_amount))]}_API_{self.index + 1}/answers/",
             headers=self.headers,
+            name="/api/users/:USER_ID/answers/",
         )
 
     @task
@@ -116,16 +117,30 @@ class BaseTestUser(BaseUser):
             data=self.create_multiplechoice_payload(),
             headers=self.headers,
         )
-        location = response.headers.get('Location').lstrip("/")
+        if response.status_code != 201:
+            return
+
+        location = response.headers.get('Location')
         if not location:
             return
+
+        location = location.lstrip("/")
 
         self.client.put(
             f"{location}evaluation/",
             data=self.create_evaluation_payload(),
             headers=self.headers,
+            name="/api/answers/:ANSWER_ID/evaluation/",
         )
 
-        self.client.get(f"{location}evaluation/", headers=self.headers)
+        self.client.get(
+            f"{location}evaluation/",
+            headers=self.headers,
+            name="/api/answers/:ANSWER_ID/evaluation/",
+        )
 
-        self.client.delete(f"{location}evaluation/", headers=self.headers)
+        self.client.delete(
+            f"{location}evaluation/",
+            headers=self.headers,
+            name="/api/answers/:ANSWER_ID/evaluation/",
+        )
