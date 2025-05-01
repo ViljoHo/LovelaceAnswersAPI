@@ -13,5 +13,7 @@ locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 
 locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api4\rerun2\rerun2 --csv-full-history
 locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api7\rerun2\rerun2 --csv-full-history
 
+locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api4\rerun3\rerun3 --csv-full-history
+
 # Headless mode
 # locust -f .\tests\locust\testing_locust.py --host http://86.50.168.252/ --users 500 --spawn-rate 4 --run-time 110s --csv .\tests\locust\results\api1\api1 --csv-full-history --headless --html report.html
